@@ -8,6 +8,14 @@ Original project:
 
 [https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html](https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html)
 
+## Repository Structure
+multirun_animal_pose_estimation_robustness
+├── README.md
+├── notebooks/
+├── figures/
+├── results/
+├── reports/
+└── models/
 ---
 
 # Highlights
@@ -60,7 +68,7 @@ The evaluation includes:
 * Paired changes relative to baseline
 * Exploratory paired statistical analyses
 
----`
+---
 ## Notebook Workflow
 
 The notebook follows the complete evaluation pipeline below:
@@ -74,7 +82,7 @@ The notebook follows the complete evaluation pipeline below:
 7. Generate summary tables, statistical analyses, and publication-ready figures.
 8. Export CSV files and automatically generate the final robustness report.
 
----`
+---
 ## Repository Outputs
 
 Running the notebook generates:
@@ -87,7 +95,7 @@ Running the notebook generates:
 - CSV files containing all quantitative results
 - An automatically generated HTML and Word report
 
----`  
+---  
 # Reproducibility
 
 All experiments were implemented in **Google Colab**.
@@ -131,10 +139,8 @@ The evaluation framework can be readily extended to investigate:
 
 # Acknowledgments
 
-This work builds upon the original **Animal Pose Estimation** project developed by **Neuromatch Academy**.
+This repository was developed by **DianelaOB** as an extension of the original Animal Pose Estimation project created by Neuromatch Academy.
 
-Original project:
+The original project is available at:
 
-[https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html](https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html)
-
-
+https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html
