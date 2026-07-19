@@ -110,7 +110,7 @@ The evaluation pipeline uses:
 
 allowing the complete robustness analysis to be reproduced directly from the notebook.
 
-Running the notebook from top to bottom reproduces the complete analysis, including model training, robustness evaluation, figure generation, CSV exports, and report generation.
+Running the notebook from top to bottom reproduces the complete evaluation pipeline, including model training, robustness evaluation, figure generation, CSV exports, and report generation. Using the same dataset, random seeds, and software environment should produce comparable quantitative results, although minor numerical differences may occur across hardware or software versions.
 
 ---
 
