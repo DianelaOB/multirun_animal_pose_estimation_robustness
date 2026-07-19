@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Multi-Run Pose Estimation Robustness Study</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  max-width: 1150px;
+  margin: 40px auto;
+  padding: 0 24px;
+  line-height: 1.55;
+  color: #222;
+}
+h1, h2 { color: #263238; }
+.results-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 18px 0 30px;
+  font-size: 12px;
+}
+.results-table th, .results-table td {
+  border: 1px solid #bbb;
+  padding: 6px;
+}
+.results-table th { background: #eee; }
+img {
+  max-width: 100%;
+  display: block;
+  margin: 22px auto 8px;
+}
+.caption {
+  text-align: center;
+  color: #555;
+  margin-bottom: 28px;
+}
+</style>
+</head>
+<body>
+<h1>Animal Pose Estimation: Multi-Run Robustness Study</h1>
+
+<h2>Executive Summary</h2>
+<ul><li>Across 5 independently trained models, baseline mean localization error was 2.82 ± 1.96 pixels, and baseline PCK@5 was 87.3 ± 14.9%.</li><li>Mild Gaussian Blur produced a mean paired change of +0.95 ± 0.54 pixels and increased error in every run (5/5).</li><li>Strong Gaussian Blur produced a mean paired change of +7.07 ± 1.07 pixels and increased error in every run (5/5).</li><li>Gaussian Noise produced a mean paired change of +31.97 ± 32.58 pixels and increased error in every run (5/5).</li><li>Brightness produced a mean paired change of +0.97 ± 0.92 pixels and increased error in most runs (4/5).</li><li>Contrast produced a mean paired change of +0.11 ± 0.15 pixels and increased error in most runs (4/5).</li><li>Central Occlusion produced a mean paired change of +47.16 ± 6.91 pixels and increased error in every run (5/5).</li><li>The largest average degradation was observed for Central Occlusion (+47.16 pixels relative to baseline).</li><li>Across runs, the highest baseline landmark error was observed for leg_fr_tip (6.98 px), while abdomen had the lowest (0.77 px).</li></ul>
+
+<h2>Experimental Design</h2>
+<p>
+5 independently initialized U-Net models were evaluated on a fixed
+validation split. Every perturbation was compared with the same model's
+baseline.
+</p>
+
+<h2>Table 1. Run-level quantitative results</h2>
+<table class="dataframe results-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Run</th>
+      <th>Seed</th>
+      <th>Condition</th>
+      <th>Mean error (px)</th>
+      <th>Median error (px)</th>
+      <th>PCK@5 (%)</th>
+      <th>PCK@10 (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>11</td>
+      <td>Baseline</td>
+      <td>3.53587</td>
+      <td>1.48066</td>
+      <td>81.76610</td>
+      <td>89.89800</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>11</td>
+      <td>Mild Gaussian Blur</td>
+      <td>4.71297</td>
+      <td>2.14724</td>
+      <td>73.70407</td>
+      <td>84.54660</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>11</td>
+      <td>Strong Gaussian Blur</td>
+      <td>10.98449</td>
+      <td>8.09577</td>
+      <td>37.09655</td>
+      <td>57.45424</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>11</td>
+      <td>Gaussian Noise</td>
+      <td>15.79043</td>
+      <td>7.22176</td>
+      <td>40.61758</td>
+      <td>58.05505</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>11</td>
+      <td>Brightness</td>
+      <td>4.03450</td>
+      <td>1.58400</td>
+      <td>79.32094</td>
+      <td>91.84016</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>11</td>
+      <td>Contrast</td>
+      <td>3.51243</td>
+      <td>1.43690</td>
+      <td>84.23921</td>
+      <td>91.86810</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>11</td>
+      <td>Central Occlusion</td>
+      <td>42.85181</td>
+      <td>41.48436</td>
+      <td>0.05589</td>
+      <td>0.18164</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>22</td>
+      <td>Baseline</td>
+      <td>5.95764</td>
+      <td>1.91967</td>
+      <td>63.40646</td>
+      <td>75.11527</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>22</td>
+      <td>Mild Gaussian Blur</td>
+      <td>6.18211</td>
+      <td>2.45058</td>
+      <td>61.05910</td>
+      <td>75.25500</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>22</td>
+      <td>Strong Gaussian Blur</td>
+      <td>13.69613</td>
+      <td>9.95946</td>
+      <td>33.79908</td>
+      <td>50.17465</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>22</td>
+      <td>Gaussian Noise</td>
+      <td>43.70377</td>
+      <td>17.62824</td>
+      <td>22.06232</td>
+      <td>32.10843</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>22</td>
+      <td>Brightness</td>
+      <td>5.53270</td>
+      <td>1.77274</td>
+      <td>66.66201</td>
+      <td>76.79195</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>22</td>
+      <td>Contrast</td>
+      <td>5.99496</td>
+      <td>1.94973</td>
+      <td>64.24480</td>
+      <td>75.21308</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>22</td>
+      <td>Central Occlusion</td>
+      <td>56.31467</td>
+      <td>47.63399</td>
+      <td>0.00000</td>
+      <td>0.06986</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>33</td>
+      <td>Baseline</td>
+      <td>1.72934</td>
+      <td>1.15465</td>
+      <td>97.05184</td>
+      <td>98.40715</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>33</td>
+      <td>Mild Gaussian Blur</td>
+      <td>3.19634</td>
+      <td>1.55758</td>
+      <td>83.12142</td>
+      <td>95.43105</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>33</td>
+      <td>Strong Gaussian Blur</td>
+      <td>7.55329</td>
+      <td>3.17784</td>
+      <td>60.82157</td>
+      <td>73.49448</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>33</td>
+      <td>Gaussian Noise</td>
+      <td>13.29095</td>
+      <td>2.73689</td>
+      <td>58.87942</td>
+      <td>64.71985</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>33</td>
+      <td>Brightness</td>
+      <td>3.52228</td>
+      <td>1.72216</td>
+      <td>75.22705</td>
+      <td>94.32723</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>33</td>
+      <td>Contrast</td>
+      <td>1.82486</td>
+      <td>1.13072</td>
+      <td>97.02389</td>
+      <td>98.16962</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>33</td>
+      <td>Central Occlusion</td>
+      <td>49.63641</td>
+      <td>44.51187</td>
+      <td>0.00000</td>
+      <td>0.08383</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>44</td>
+      <td>Baseline</td>
+      <td>1.50947</td>
+      <td>0.95664</td>
+      <td>97.13567</td>
+      <td>98.47702</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>44</td>
+      <td>Mild Gaussian Blur</td>
+      <td>2.85314</td>
+      <td>1.34767</td>
+      <td>85.38494</td>
+      <td>93.89409</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>44</td>
+      <td>Strong Gaussian Blur</td>
+      <td>7.58536</td>
+      <td>4.84160</td>
+      <td>51.22258</td>
+      <td>69.51237</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>44</td>
+      <td>Gaussian Noise</td>
+      <td>88.18502</td>
+      <td>103.34831</td>
+      <td>7.86642</td>
+      <td>13.23180</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>44</td>
+      <td>Brightness</td>
+      <td>2.84501</td>
+      <td>1.39577</td>
+      <td>82.04555</td>
+      <td>96.77239</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>44</td>
+      <td>Contrast</td>
+      <td>1.59291</td>
+      <td>1.01885</td>
+      <td>96.47897</td>
+      <td>98.16962</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>44</td>
+      <td>Central Occlusion</td>
+      <td>43.17675</td>
+      <td>34.11606</td>
+      <td>0.09781</td>
+      <td>0.50300</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>55</td>
+      <td>Baseline</td>
+      <td>1.37878</td>
+      <td>0.85951</td>
+      <td>97.13567</td>
+      <td>98.63071</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>55</td>
+      <td>Mild Gaussian Blur</td>
+      <td>1.93842</td>
+      <td>1.06973</td>
+      <td>93.89409</td>
+      <td>97.16362</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>55</td>
+      <td>Strong Gaussian Blur</td>
+      <td>9.65361</td>
+      <td>4.85575</td>
+      <td>50.67766</td>
+      <td>69.38661</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>55</td>
+      <td>Gaussian Noise</td>
+      <td>12.99711</td>
+      <td>4.29556</td>
+      <td>51.92120</td>
+      <td>62.13497</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>55</td>
+      <td>Brightness</td>
+      <td>3.00323</td>
+      <td>1.22881</td>
+      <td>87.73229</td>
+      <td>93.44697</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>55</td>
+      <td>Contrast</td>
+      <td>1.75367</td>
+      <td>1.01577</td>
+      <td>95.82227</td>
+      <td>97.61073</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>55</td>
+      <td>Central Occlusion</td>
+      <td>57.94437</td>
+      <td>57.85213</td>
+      <td>0.18164</td>
+      <td>0.26547</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Table 2. Summary across runs</h2>
+<table class="dataframe results-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Condition</th>
+      <th>Mean error across runs (px)</th>
+      <th>SD across runs (px)</th>
+      <th>Mean PCK@5 across runs (%)</th>
+      <th>SD PCK@5 across runs</th>
+      <th>Mean paired change vs baseline (px)</th>
+      <th>SD paired change (px)</th>
+      <th>Runs with increased error (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Baseline</td>
+      <td>2.82222</td>
+      <td>1.95840</td>
+      <td>87.29915</td>
+      <td>14.91731</td>
+      <td>0.00000</td>
+      <td>0.00000</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>3.77660</td>
+      <td>1.67568</td>
+      <td>79.43272</td>
+      <td>12.53569</td>
+      <td>0.95438</td>
+      <td>0.53678</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>9.89458</td>
+      <td>2.57449</td>
+      <td>46.72349</td>
+      <td>11.11701</td>
+      <td>7.07236</td>
+      <td>1.07037</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>34.79346</td>
+      <td>32.51387</td>
+      <td>36.26939</td>
+      <td>21.11675</td>
+      <td>31.97124</td>
+      <td>32.57857</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>3.78754</td>
+      <td>1.08172</td>
+      <td>78.19757</td>
+      <td>7.88785</td>
+      <td>0.96533</td>
+      <td>0.92292</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>2.93577</td>
+      <td>1.87922</td>
+      <td>87.56183</td>
+      <td>14.07129</td>
+      <td>0.11355</td>
+      <td>0.15339</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>49.98480</td>
+      <td>7.08471</td>
+      <td>0.06707</td>
+      <td>0.07615</td>
+      <td>47.16258</td>
+      <td>6.90912</td>
+      <td>100.0</td>
+    </tr>
+  </tbody>
+</table>
+
+<img src="../figures/figure1_baseline_variability.png">
+<p class="caption">Figure 1. Baseline variability across runs.</p>
+
+<img src="../figures/figure2_paired_condition_performance.png">
+<p class="caption">Figure 2. Paired condition performance.</p>
+
+<img src="../figures/figure3_mean_sd_by_condition.png">
+<p class="caption">Figure 3. Mean ± SD across runs.</p>
+
+<h2>Table 3. Paired changes relative to baseline</h2>
+<table class="dataframe results-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Run</th>
+      <th>Seed</th>
+      <th>Condition</th>
+      <th>Baseline mean error (px)</th>
+      <th>Perturbed mean error (px)</th>
+      <th>Absolute change (px)</th>
+      <th>Relative change (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>11</td>
+      <td>Mild Gaussian Blur</td>
+      <td>3.53587</td>
+      <td>4.71297</td>
+      <td>1.17710</td>
+      <td>33.29037</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>11</td>
+      <td>Strong Gaussian Blur</td>
+      <td>3.53587</td>
+      <td>10.98449</td>
+      <td>7.44862</td>
+      <td>210.65873</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>11</td>
+      <td>Gaussian Noise</td>
+      <td>3.53587</td>
+      <td>15.79043</td>
+      <td>12.25456</td>
+      <td>346.57852</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>11</td>
+      <td>Brightness</td>
+      <td>3.53587</td>
+      <td>4.03450</td>
+      <td>0.49863</td>
+      <td>14.10213</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>11</td>
+      <td>Contrast</td>
+      <td>3.53587</td>
+      <td>3.51243</td>
+      <td>-0.02343</td>
+      <td>-0.66278</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>11</td>
+      <td>Central Occlusion</td>
+      <td>3.53587</td>
+      <td>42.85181</td>
+      <td>39.31594</td>
+      <td>1111.91714</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>22</td>
+      <td>Mild Gaussian Blur</td>
+      <td>5.95764</td>
+      <td>6.18211</td>
+      <td>0.22447</td>
+      <td>3.76771</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>22</td>
+      <td>Strong Gaussian Blur</td>
+      <td>5.95764</td>
+      <td>13.69613</td>
+      <td>7.73850</td>
+      <td>129.89197</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>22</td>
+      <td>Gaussian Noise</td>
+      <td>5.95764</td>
+      <td>43.70377</td>
+      <td>37.74613</td>
+      <td>633.57525</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>22</td>
+      <td>Brightness</td>
+      <td>5.95764</td>
+      <td>5.53270</td>
+      <td>-0.42494</td>
+      <td>-7.13269</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>22</td>
+      <td>Contrast</td>
+      <td>5.95764</td>
+      <td>5.99496</td>
+      <td>0.03732</td>
+      <td>0.62639</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>22</td>
+      <td>Central Occlusion</td>
+      <td>5.95764</td>
+      <td>56.31467</td>
+      <td>50.35703</td>
+      <td>845.25133</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>33</td>
+      <td>Mild Gaussian Blur</td>
+      <td>1.72934</td>
+      <td>3.19634</td>
+      <td>1.46699</td>
+      <td>84.82936</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>33</td>
+      <td>Strong Gaussian Blur</td>
+      <td>1.72934</td>
+      <td>7.55329</td>
+      <td>5.82394</td>
+      <td>336.77165</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>33</td>
+      <td>Gaussian Noise</td>
+      <td>1.72934</td>
+      <td>13.29095</td>
+      <td>11.56160</td>
+      <td>668.55401</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>33</td>
+      <td>Brightness</td>
+      <td>1.72934</td>
+      <td>3.52228</td>
+      <td>1.79294</td>
+      <td>103.67722</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>33</td>
+      <td>Contrast</td>
+      <td>1.72934</td>
+      <td>1.82486</td>
+      <td>0.09551</td>
+      <td>5.52309</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>33</td>
+      <td>Central Occlusion</td>
+      <td>1.72934</td>
+      <td>49.63641</td>
+      <td>47.90706</td>
+      <td>2770.24348</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>44</td>
+      <td>Mild Gaussian Blur</td>
+      <td>1.50947</td>
+      <td>2.85314</td>
+      <td>1.34367</td>
+      <td>89.01639</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>44</td>
+      <td>Strong Gaussian Blur</td>
+      <td>1.50947</td>
+      <td>7.58536</td>
+      <td>6.07589</td>
+      <td>402.51873</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>44</td>
+      <td>Gaussian Noise</td>
+      <td>1.50947</td>
+      <td>88.18502</td>
+      <td>86.67555</td>
+      <td>5742.12514</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>44</td>
+      <td>Brightness</td>
+      <td>1.50947</td>
+      <td>2.84501</td>
+      <td>1.33554</td>
+      <td>88.47781</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>44</td>
+      <td>Contrast</td>
+      <td>1.50947</td>
+      <td>1.59291</td>
+      <td>0.08344</td>
+      <td>5.52797</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>44</td>
+      <td>Central Occlusion</td>
+      <td>1.50947</td>
+      <td>43.17675</td>
+      <td>41.66728</td>
+      <td>2760.39451</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>55</td>
+      <td>Mild Gaussian Blur</td>
+      <td>1.37878</td>
+      <td>1.93842</td>
+      <td>0.55964</td>
+      <td>40.58993</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>55</td>
+      <td>Strong Gaussian Blur</td>
+      <td>1.37878</td>
+      <td>9.65361</td>
+      <td>8.27483</td>
+      <td>600.15753</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>55</td>
+      <td>Gaussian Noise</td>
+      <td>1.37878</td>
+      <td>12.99711</td>
+      <td>11.61833</td>
+      <td>842.65518</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>55</td>
+      <td>Brightness</td>
+      <td>1.37878</td>
+      <td>3.00323</td>
+      <td>1.62445</td>
+      <td>117.81834</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>55</td>
+      <td>Contrast</td>
+      <td>1.37878</td>
+      <td>1.75367</td>
+      <td>0.37490</td>
+      <td>27.19045</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>55</td>
+      <td>Central Occlusion</td>
+      <td>1.37878</td>
+      <td>57.94437</td>
+      <td>56.56560</td>
+      <td>4102.59334</td>
+    </tr>
+  </tbody>
+</table>
+
+<img src="../figures/figure4_paired_changes_boxplot.png">
+<p class="caption">Figure 4. Paired robustness changes across runs.</p>
+
+<h2>Table 4. Landmark-level summary</h2>
+<table class="dataframe results-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Condition</th>
+      <th>Landmark</th>
+      <th>Mean error across runs (px)</th>
+      <th>SD across runs (px)</th>
+      <th>Mean paired change vs baseline (px)</th>
+      <th>SD paired change (px)</th>
+      <th>Runs with increased error (%)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Brightness</td>
+      <td>leg_mr_tip</td>
+      <td>10.34294</td>
+      <td>5.34607</td>
+      <td>5.31902</td>
+      <td>4.26183</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>leg_br_tip</td>
+      <td>8.62716</td>
+      <td>1.56707</td>
+      <td>3.18715</td>
+      <td>2.75730</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>leg_ml_tip</td>
+      <td>8.03637</td>
+      <td>3.24806</td>
+      <td>3.16344</td>
+      <td>2.25259</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>leg_bl_tip</td>
+      <td>9.28865</td>
+      <td>1.82801</td>
+      <td>3.00131</td>
+      <td>2.90383</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>leg_fl_tip</td>
+      <td>7.12716</td>
+      <td>4.31605</td>
+      <td>1.08324</td>
+      <td>2.42212</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>leg_fr_tip</td>
+      <td>7.37124</td>
+      <td>4.08763</td>
+      <td>0.39539</td>
+      <td>4.08592</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>leg_mr_c</td>
+      <td>1.52698</td>
+      <td>0.22191</td>
+      <td>0.28921</td>
+      <td>0.14321</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>abdomen</td>
+      <td>1.00910</td>
+      <td>0.22418</td>
+      <td>0.23704</td>
+      <td>0.25463</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>leg_mr_in</td>
+      <td>1.32141</td>
+      <td>0.24575</td>
+      <td>0.17251</td>
+      <td>0.23758</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>leg_ml_c</td>
+      <td>1.52789</td>
+      <td>0.32712</td>
+      <td>0.16763</td>
+      <td>0.38162</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>head_bl</td>
+      <td>1.53491</td>
+      <td>0.72480</td>
+      <td>0.08429</td>
+      <td>0.42742</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>leg_ml_in</td>
+      <td>1.06189</td>
+      <td>0.15024</td>
+      <td>0.06986</td>
+      <td>0.12675</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>thorax_fr</td>
+      <td>1.31540</td>
+      <td>0.53466</td>
+      <td>0.06370</td>
+      <td>0.28332</td>
+      <td>40.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>thorax_bc</td>
+      <td>0.98987</td>
+      <td>0.22091</td>
+      <td>0.01481</td>
+      <td>0.04283</td>
+      <td>40.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>thorax_fl</td>
+      <td>0.98238</td>
+      <td>0.23029</td>
+      <td>0.00709</td>
+      <td>0.25283</td>
+      <td>40.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>head_br</td>
+      <td>1.02545</td>
+      <td>0.28935</td>
+      <td>-0.13126</td>
+      <td>0.32044</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>head_fc</td>
+      <td>1.29946</td>
+      <td>0.93552</td>
+      <td>-0.71391</td>
+      <td>1.59525</td>
+      <td>40.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>leg_mr_c</td>
+      <td>59.68631</td>
+      <td>10.32630</td>
+      <td>58.44855</td>
+      <td>10.44029</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>leg_mr_tip</td>
+      <td>63.35020</td>
+      <td>22.12422</td>
+      <td>58.32628</td>
+      <td>25.35789</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>leg_br_tip</td>
+      <td>62.93638</td>
+      <td>22.51969</td>
+      <td>57.49638</td>
+      <td>24.37824</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>head_bl</td>
+      <td>58.90725</td>
+      <td>32.61538</td>
+      <td>57.45662</td>
+      <td>32.81826</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>head_fc</td>
+      <td>58.01277</td>
+      <td>41.59648</td>
+      <td>55.99939</td>
+      <td>39.46995</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>thorax_bc</td>
+      <td>51.88603</td>
+      <td>11.58605</td>
+      <td>50.91097</td>
+      <td>11.66021</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>abdomen</td>
+      <td>51.61171</td>
+      <td>23.96733</td>
+      <td>50.83965</td>
+      <td>23.99180</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>leg_mr_in</td>
+      <td>50.79702</td>
+      <td>8.56336</td>
+      <td>49.64812</td>
+      <td>8.60486</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>leg_ml_in</td>
+      <td>45.48438</td>
+      <td>10.14400</td>
+      <td>44.49235</td>
+      <td>10.13681</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>thorax_fr</td>
+      <td>44.44084</td>
+      <td>6.87718</td>
+      <td>43.18914</td>
+      <td>6.59580</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>leg_ml_c</td>
+      <td>44.36511</td>
+      <td>7.42608</td>
+      <td>43.00486</td>
+      <td>7.52511</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>thorax_fl</td>
+      <td>43.63604</td>
+      <td>9.17134</td>
+      <td>42.66075</td>
+      <td>9.10082</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>head_br</td>
+      <td>43.62628</td>
+      <td>9.97683</td>
+      <td>42.46958</td>
+      <td>9.55776</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>leg_ml_tip</td>
+      <td>44.73832</td>
+      <td>17.28266</td>
+      <td>39.86539</td>
+      <td>13.74747</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>leg_fl_tip</td>
+      <td>44.23804</td>
+      <td>18.35958</td>
+      <td>38.19412</td>
+      <td>13.67153</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>leg_bl_tip</td>
+      <td>42.65906</td>
+      <td>19.44639</td>
+      <td>36.37172</td>
+      <td>22.40358</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>leg_fr_tip</td>
+      <td>39.36583</td>
+      <td>10.66403</td>
+      <td>32.38998</td>
+      <td>10.92314</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>leg_mr_tip</td>
+      <td>6.04859</td>
+      <td>5.99862</td>
+      <td>1.02467</td>
+      <td>1.89789</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>leg_mr_in</td>
+      <td>1.49011</td>
+      <td>0.50852</td>
+      <td>0.34121</td>
+      <td>0.37347</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>thorax_fr</td>
+      <td>1.51765</td>
+      <td>0.70123</td>
+      <td>0.26595</td>
+      <td>0.55084</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>thorax_bc</td>
+      <td>1.19682</td>
+      <td>0.29572</td>
+      <td>0.22177</td>
+      <td>0.13112</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>leg_ml_in</td>
+      <td>1.21362</td>
+      <td>0.32794</td>
+      <td>0.22159</td>
+      <td>0.23124</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>leg_ml_tip</td>
+      <td>5.08242</td>
+      <td>4.70514</td>
+      <td>0.20949</td>
+      <td>0.59997</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>leg_mr_c</td>
+      <td>1.38257</td>
+      <td>0.24186</td>
+      <td>0.14480</td>
+      <td>0.22957</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>leg_bl_tip</td>
+      <td>6.40723</td>
+      <td>3.73744</td>
+      <td>0.11989</td>
+      <td>0.51135</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>abdomen</td>
+      <td>0.88905</td>
+      <td>0.12563</td>
+      <td>0.11699</td>
+      <td>0.11777</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>thorax_fl</td>
+      <td>1.08397</td>
+      <td>0.35194</td>
+      <td>0.10869</td>
+      <td>0.07982</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>leg_br_tip</td>
+      <td>5.50921</td>
+      <td>3.09102</td>
+      <td>0.06920</td>
+      <td>0.66981</td>
+      <td>40.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>leg_ml_c</td>
+      <td>1.41982</td>
+      <td>0.16216</td>
+      <td>0.05956</td>
+      <td>0.28937</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>head_br</td>
+      <td>1.14708</td>
+      <td>0.36790</td>
+      <td>-0.00963</td>
+      <td>0.27995</td>
+      <td>40.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>leg_fl_tip</td>
+      <td>6.00170</td>
+      <td>6.11014</td>
+      <td>-0.04222</td>
+      <td>1.36116</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>head_bl</td>
+      <td>1.40425</td>
+      <td>0.29563</td>
+      <td>-0.04637</td>
+      <td>0.35583</td>
+      <td>40.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>head_fc</td>
+      <td>1.86258</td>
+      <td>2.23559</td>
+      <td>-0.15079</td>
+      <td>0.28368</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>leg_fr_tip</td>
+      <td>6.25136</td>
+      <td>5.85495</td>
+      <td>-0.72449</td>
+      <td>1.53498</td>
+      <td>40.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>leg_mr_tip</td>
+      <td>48.76034</td>
+      <td>25.55389</td>
+      <td>43.73642</td>
+      <td>25.83989</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>head_fc</td>
+      <td>45.71061</td>
+      <td>49.60036</td>
+      <td>43.69724</td>
+      <td>48.69862</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>leg_bl_tip</td>
+      <td>49.59801</td>
+      <td>35.20160</td>
+      <td>43.31067</td>
+      <td>37.05142</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>leg_br_tip</td>
+      <td>46.69536</td>
+      <td>48.75825</td>
+      <td>41.25535</td>
+      <td>50.60804</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>leg_ml_tip</td>
+      <td>44.96233</td>
+      <td>41.05223</td>
+      <td>40.08940</td>
+      <td>42.06972</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>abdomen</td>
+      <td>40.55868</td>
+      <td>55.46418</td>
+      <td>39.78662</td>
+      <td>55.45722</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>leg_fl_tip</td>
+      <td>43.71827</td>
+      <td>32.63992</td>
+      <td>37.67435</td>
+      <td>31.97867</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>head_br</td>
+      <td>37.74265</td>
+      <td>44.64782</td>
+      <td>36.58594</td>
+      <td>44.51656</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>leg_ml_c</td>
+      <td>36.74996</td>
+      <td>47.67211</td>
+      <td>35.38970</td>
+      <td>47.58351</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>leg_fr_tip</td>
+      <td>40.24660</td>
+      <td>33.20788</td>
+      <td>33.27075</td>
+      <td>33.44099</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>leg_mr_c</td>
+      <td>34.47002</td>
+      <td>54.00590</td>
+      <td>33.23225</td>
+      <td>53.97009</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>thorax_fr</td>
+      <td>32.21289</td>
+      <td>35.23314</td>
+      <td>30.96119</td>
+      <td>35.26750</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>thorax_bc</td>
+      <td>24.96355</td>
+      <td>43.74426</td>
+      <td>23.98849</td>
+      <td>43.77352</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>head_bl</td>
+      <td>21.62401</td>
+      <td>25.62042</td>
+      <td>20.17338</td>
+      <td>25.61984</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>leg_mr_in</td>
+      <td>18.83797</td>
+      <td>23.20500</td>
+      <td>17.68906</td>
+      <td>23.31688</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>thorax_fl</td>
+      <td>12.58460</td>
+      <td>19.73213</td>
+      <td>11.60932</td>
+      <td>19.45132</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>leg_ml_in</td>
+      <td>12.05292</td>
+      <td>13.91300</td>
+      <td>11.06089</td>
+      <td>13.88011</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>leg_br_tip</td>
+      <td>8.43128</td>
+      <td>1.61604</td>
+      <td>2.99128</td>
+      <td>2.00740</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>leg_bl_tip</td>
+      <td>9.04242</td>
+      <td>2.43333</td>
+      <td>2.75508</td>
+      <td>2.53246</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>leg_ml_tip</td>
+      <td>7.18757</td>
+      <td>4.22262</td>
+      <td>2.31464</td>
+      <td>2.44644</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>leg_mr_tip</td>
+      <td>7.26579</td>
+      <td>3.82667</td>
+      <td>2.24187</td>
+      <td>2.51773</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>leg_fr_tip</td>
+      <td>8.80919</td>
+      <td>6.21336</td>
+      <td>1.83334</td>
+      <td>1.34235</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>leg_fl_tip</td>
+      <td>7.45439</td>
+      <td>5.81829</td>
+      <td>1.41047</td>
+      <td>0.69673</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>head_fc</td>
+      <td>2.63153</td>
+      <td>3.01288</td>
+      <td>0.61815</td>
+      <td>0.64895</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>head_br</td>
+      <td>1.54949</td>
+      <td>0.95916</td>
+      <td>0.39279</td>
+      <td>0.50824</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>leg_mr_c</td>
+      <td>1.57053</td>
+      <td>0.27259</td>
+      <td>0.33276</td>
+      <td>0.22548</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>leg_mr_in</td>
+      <td>1.46605</td>
+      <td>0.62755</td>
+      <td>0.31715</td>
+      <td>0.50295</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>thorax_fr</td>
+      <td>1.55165</td>
+      <td>0.93515</td>
+      <td>0.29995</td>
+      <td>0.65223</td>
+      <td>60.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>leg_ml_c</td>
+      <td>1.62230</td>
+      <td>0.36094</td>
+      <td>0.26204</td>
+      <td>0.23492</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>leg_ml_in</td>
+      <td>1.17694</td>
+      <td>0.19417</td>
+      <td>0.18491</td>
+      <td>0.13435</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>thorax_fl</td>
+      <td>1.12288</td>
+      <td>0.44279</td>
+      <td>0.14759</td>
+      <td>0.16154</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>thorax_bc</td>
+      <td>1.04794</td>
+      <td>0.16826</td>
+      <td>0.07288</td>
+      <td>0.17550</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>abdomen</td>
+      <td>0.80615</td>
+      <td>0.06619</td>
+      <td>0.03409</td>
+      <td>0.09092</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>head_bl</td>
+      <td>1.46603</td>
+      <td>0.33579</td>
+      <td>0.01540</td>
+      <td>0.52677</td>
+      <td>20.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>leg_mr_tip</td>
+      <td>17.20900</td>
+      <td>4.40747</td>
+      <td>12.18508</td>
+      <td>8.96280</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>head_fc</td>
+      <td>13.54816</td>
+      <td>17.27731</td>
+      <td>11.53479</td>
+      <td>16.94119</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>leg_br_tip</td>
+      <td>15.50137</td>
+      <td>3.42333</td>
+      <td>10.06137</td>
+      <td>6.71319</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>leg_ml_tip</td>
+      <td>14.80919</td>
+      <td>3.87518</td>
+      <td>9.93626</td>
+      <td>7.91576</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>leg_bl_tip</td>
+      <td>16.19375</td>
+      <td>4.85847</td>
+      <td>9.90641</td>
+      <td>7.76330</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>leg_fl_tip</td>
+      <td>15.83944</td>
+      <td>7.95442</td>
+      <td>9.79552</td>
+      <td>2.30886</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>leg_fr_tip</td>
+      <td>14.28056</td>
+      <td>5.83058</td>
+      <td>7.30471</td>
+      <td>2.63498</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>head_br</td>
+      <td>7.90299</td>
+      <td>6.82599</td>
+      <td>6.74628</td>
+      <td>6.32212</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>thorax_fr</td>
+      <td>7.77044</td>
+      <td>6.26434</td>
+      <td>6.51874</td>
+      <td>6.00571</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>leg_mr_in</td>
+      <td>7.31764</td>
+      <td>2.99338</td>
+      <td>6.16874</td>
+      <td>3.02096</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>head_bl</td>
+      <td>7.48735</td>
+      <td>7.56943</td>
+      <td>6.03672</td>
+      <td>7.74839</td>
+      <td>80.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>thorax_fl</td>
+      <td>6.66837</td>
+      <td>6.34910</td>
+      <td>5.69309</td>
+      <td>6.15764</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>leg_ml_c</td>
+      <td>6.93785</td>
+      <td>5.20643</td>
+      <td>5.57759</td>
+      <td>5.17315</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>leg_ml_in</td>
+      <td>6.40103</td>
+      <td>6.10217</td>
+      <td>5.40900</td>
+      <td>6.03548</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>leg_mr_c</td>
+      <td>6.10756</td>
+      <td>1.57780</td>
+      <td>4.86979</td>
+      <td>1.64989</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>thorax_bc</td>
+      <td>3.33934</td>
+      <td>1.45974</td>
+      <td>2.36429</td>
+      <td>1.50974</td>
+      <td>100.0</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>abdomen</td>
+      <td>0.89373</td>
+      <td>0.19596</td>
+      <td>0.12167</td>
+      <td>0.23652</td>
+      <td>60.0</td>
+    </tr>
+  </tbody>
+</table>
+
+<img src="../figures/figure5_landmark_robustness_heatmap.png">
+<p class="caption">Figure 5. Landmark robustness heatmap.</p>
+
+<h2>Table 5. Exploratory paired tests</h2>
+<table class="dataframe results-table">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Condition</th>
+      <th>Mean paired change (px)</th>
+      <th>SD paired change (px)</th>
+      <th>Paired t-test p-value</th>
+      <th>One-sided Wilcoxon p-value</th>
+      <th>Runs increased / total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Mild Gaussian Blur</td>
+      <td>0.95438</td>
+      <td>0.53678</td>
+      <td>0.01646</td>
+      <td>0.03125</td>
+      <td>5/5</td>
+    </tr>
+    <tr>
+      <td>Strong Gaussian Blur</td>
+      <td>7.07236</td>
+      <td>1.07037</td>
+      <td>0.00012</td>
+      <td>0.03125</td>
+      <td>5/5</td>
+    </tr>
+    <tr>
+      <td>Gaussian Noise</td>
+      <td>31.97124</td>
+      <td>32.57857</td>
+      <td>0.09323</td>
+      <td>0.03125</td>
+      <td>5/5</td>
+    </tr>
+    <tr>
+      <td>Brightness</td>
+      <td>0.96533</td>
+      <td>0.92292</td>
+      <td>0.07948</td>
+      <td>0.06250</td>
+      <td>4/5</td>
+    </tr>
+    <tr>
+      <td>Contrast</td>
+      <td>0.11355</td>
+      <td>0.15339</td>
+      <td>0.17321</td>
+      <td>0.06250</td>
+      <td>4/5</td>
+    </tr>
+    <tr>
+      <td>Central Occlusion</td>
+      <td>47.16258</td>
+      <td>6.90912</td>
+      <td>0.00011</td>
+      <td>0.03125</td>
+      <td>5/5</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Limitations</h2>
+<ul><li>The study includes 5 independent runs; more runs would provide a more precise estimate of variability.</li><li>Every model was trained for 3 epochs using the original course-scale architecture and training settings.</li><li>Only one predefined severity was used for noise, brightness, contrast, and occlusion, while two blur severities were tested.</li><li>The validation split was fixed to isolate training variability; results may also vary under different data splits.</li><li>The paired statistical tests are exploratory and have limited power with a small number of runs.</li><li>The study evaluates robustness to synthetic perturbations and does not establish performance under all real-world imaging conditions.</li></ul>
+</body>
+</html>
