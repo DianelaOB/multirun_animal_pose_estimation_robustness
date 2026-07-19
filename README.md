@@ -9,14 +9,15 @@ Original project:
 [https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html](https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html)
 
 ## Repository Structure
-multirun_animal_pose_estimation_robustness
+```text
+multirun_animal_pose_estimation_robustness/
 ├── README.md
-├── notebooks/
-├── figures/
-├── results/
-├── reports/
-└── models/
----
+├── notebooks/      # Main Colab notebook
+├── figures/        # Generated figures
+├── results/        # Quantitative CSV outputs
+├── reports/        # Automatically generated reports
+└── models/         # Trained U-Net weights
+```
 
 # Highlights
 
