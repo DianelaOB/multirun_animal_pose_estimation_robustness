@@ -99,7 +99,7 @@ Running the notebook generates:
 ---  
 # Reproducibility
 
-All experiments were implemented in **Google Colab**.
+All experiments were developed and tested in **Google Colab** using the default runtime environment.
 
 The evaluation pipeline uses:
 
