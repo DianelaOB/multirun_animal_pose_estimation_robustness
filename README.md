@@ -1,147 +1,109 @@
-# Multi-Run Robustness Evaluation of the Neuromatch U-Net for Animal Pose Estimation
+# Multi-Run Robustness Evaluation of Animal Pose Estimation
 
-This repository extends the original **Neuromatch Academy Animal Pose Estimation** project by providing a reproducible framework for evaluating the robustness of the U-Net pose estimation model across multiple independent training runs and several common image perturbations.
+This repository extends the original **Neuromatch Academy Animal Pose Estimation** notebook.
 
-The original Neuromatch project trains a U-Net to localize 17 anatomical landmarks on grayscale images of fruit flies.
+The original notebook trains and evaluates a single U-Net model to detect 17 anatomical landmarks in grayscale images of fruit flies. In this project, I expanded the evaluation by training the same model five independent times using different random seeds. The objective was to study how consistent the model is across different training runs and how its performance changes when the input images are affected by common perturbations.
 
-Original project:
+The original Neuromatch notebook is available here:
 
-[https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html](https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html)
+https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html
 
-## Repository Structure
+---
+
+# Repository structure
+
 ```text
 multirun_animal_pose_estimation_robustness/
 ├── README.md
 ├── notebooks/      # Main Colab notebook
 ├── figures/        # Generated figures
-├── results/        # Quantitative CSV outputs
-├── reports/        # Automatically generated reports
-└── models/         # Trained U-Net weights
+├── results/        # CSV files with evaluation results
+├── reports/        # Final report
+└── models/         # Saved model weights
 ```
 
-# Highlights
+---
 
-This repository extends the original Neuromatch notebook by introducing:
+# Project overview
 
-* Multi-run robustness evaluation across five independently trained U-Net models
-* Baseline variability analysis
-* Robustness evaluation under multiple image perturbations
-* Landmark-level robustness analysis
-* Automatic generation of quantitative tables, figures, summary CSV files, and a reproducible report
-* Exploratory statistical analyses across independent training runs
+The original training pipeline was kept unchanged, including the U-Net architecture, optimizer, loss function, and training settings. The main difference is that the model is trained five times instead of once.
+
+After training, each model is evaluated on the same validation set under the original images and under several image perturbations. This makes it possible to compare the effect of each perturbation while also measuring the variability between independent training runs.
 
 ---
 
-# Project Overview
+# Image perturbations
 
-The original Neuromatch notebook evaluates a single trained model. In this work, I extended the evaluation pipeline to quantify robustness across multiple independently trained models while keeping the original U-Net architecture, optimizer, loss function, and training procedure unchanged.
+The following perturbations are applied during evaluation:
 
-Each model is trained using a different random seed and evaluated on the same validation dataset under both the original imaging conditions and several synthetic image perturbations. Performance is analyzed using multiple localization metrics, paired comparisons relative to baseline, and landmark-level robustness analyses.
+* Mild Gaussian blur
+* Strong Gaussian blur
+* Gaussian noise
+* Increased brightness
+* Increased contrast
+* Central occlusion
 
----
-
-# Evaluated Perturbations
-
-The following perturbations are applied **only during evaluation**:
-
-* Mild Gaussian Blur
-* Strong Gaussian Blur
-* Gaussian Noise
-* Brightness Increase
-* Contrast Increase
-* Central Occlusion
-
-These perturbations modify only the image appearance while preserving the original landmark coordinates.
+These perturbations only modify the appearance of the images. The landmark coordinates remain unchanged.
 
 ---
 
-# Evaluation Metrics
+# Evaluation
 
-The evaluation includes:
+For every trained model, the notebook computes:
 
-* Mean localization error (pixels)
+* Mean localization error
 * Median localization error
 * PCK@5
 * PCK@10
 * PCK@20
-* Landmark-specific localization error
-* Percentage change relative to baseline
-* Paired changes relative to baseline
-* Exploratory paired statistical analyses
+* Landmark-level localization error
 
----
-## Notebook Workflow
-
-The notebook follows the complete evaluation pipeline below:
-
-1. Load the original Neuromatch dataset and model.
-2. Train five U-Net models using different random seeds while keeping the original training pipeline unchanged.
-3. Evaluate each trained model on the original validation images (baseline).
-4. Evaluate the same models under six synthetic image perturbations.
-5. Compute localization metrics (mean error, median error, PCK@5, PCK@10, landmark-level errors).
-6. Perform paired comparisons relative to each model's baseline performance.
-7. Generate summary tables, statistical analyses, and publication-ready figures.
-8. Export CSV files and automatically generate the final robustness report.
-
----
-## Repository Outputs
-
-Running the notebook generates:
-
-- Five trained U-Net models
-- Run-level performance tables
-- Summary statistics across independent runs
-- Landmark-level robustness analyses
-- Publication-quality figures
-- CSV files containing all quantitative results
-- An automatically generated HTML and Word report
-
----  
-# Reproducibility
-
-All experiments were developed and tested in **Google Colab**. The notebook installs any additional dependencies required beyond the default Colab environment.
-
-The evaluation pipeline uses:
-
-* Five fixed random seeds
-* A fixed validation split
-* Identical training settings across runs
-* Deterministic perturbation generation
-
-allowing the complete robustness analysis to be reproduced directly from the notebook.
-
-Running the notebook from top to bottom reproduces the complete evaluation pipeline, including model training, robustness evaluation, figure generation, CSV exports, and report generation. Using the same dataset, random seeds, and software environment should produce comparable quantitative results, although minor numerical differences may occur across hardware or software versions.
+The performance obtained under each perturbation is compared with the baseline performance of the same model. This paired comparison makes it easier to evaluate how much each perturbation affects the predictions.
 
 ---
 
-# Results
+# Running the notebook
 
-The repository automatically generates:
+The notebook was developed in **Google Colab**.
 
-* Trained models
-* Performance tables
-* Robustness figures
-* Statistical summaries
-* A complete robustness report
+Running the notebook from beginning to end will:
 
----
+1. Load the dataset.
+2. Train five U-Net models using different random seeds.
+3. Evaluate each model on the validation set.
+4. Apply all perturbation conditions.
+5. Generate figures and CSV files.
+6. Create the final report.
 
-# Future Work
-
-The evaluation framework can be readily extended to investigate:
-
-* Perturbation-based data augmentation during training
-* Additional perturbation types (e.g., rotations, translations, motion blur)
-* Multiple perturbation severity levels
-* Alternative pose estimation architectures
-* Evaluation on real-world degraded images
+The same validation split and training configuration are used for every run so that the results can be compared directly.
 
 ---
 
-# Acknowledgments
+# Outputs
 
-This repository was developed by **DianelaOB** as an extension of the original Animal Pose Estimation project created by Neuromatch Academy.
+After running the notebook, the following files are generated:
 
-The original project is available at:
+* trained model weights;
+* evaluation tables;
+* robustness figures;
+* CSV files containing the quantitative results;
+* a final report summarizing the study.
+
+---
+
+# Future work
+
+Possible extensions of this project include:
+
+* using perturbation-based data augmentation during training;
+* evaluating additional perturbation types, such as rotations or motion blur;
+* testing different perturbation strengths;
+* comparing other pose estimation architectures.
+
+---
+
+# Original project
+
+This work is based on the **Animal Pose Estimation** notebook developed by **Neuromatch Academy**.
 
 https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html
