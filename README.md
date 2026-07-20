@@ -55,7 +55,6 @@ For every trained model, the notebook computes:
 * Median localization error
 * PCK@5
 * PCK@10
-* PCK@20
 * Landmark-level localization error
 
 The performance obtained under each perturbation is compared with the baseline performance of the same model. This paired comparison makes it easier to evaluate how much each perturbation affects the predictions.
@@ -83,10 +82,10 @@ The same validation split and training configuration are used for every run so t
 
 After running the notebook, the following files are generated:
 
-* trained model weights;
-* evaluation tables;
-* robustness figures;
-* CSV files containing the quantitative results;
+* trained model weights
+* evaluation tables
+* robustness figures
+* CSV files containing the quantitative results
 * a final report summarizing the study.
 
 ---
@@ -95,15 +94,7 @@ After running the notebook, the following files are generated:
 
 Possible extensions of this project include:
 
-* using perturbation-based data augmentation during training;
-* evaluating additional perturbation types, such as rotations or motion blur;
-* testing different perturbation strengths;
+* using perturbation-based data augmentation during training
+* evaluating additional perturbation types, such as rotations or motion blur
+* testing different perturbation strengths
 * comparing other pose estimation architectures.
-
----
-
-# Original project
-
-This work is based on the **Animal Pose Estimation** notebook developed by **Neuromatch Academy**.
-
-https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html
