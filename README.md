@@ -2,11 +2,15 @@
 
 This repository contains the work developed for my **Neuromatch Academy Deep Learning** project.
 
-The study investigates the robustness of the U-Net-based animal pose estimator provided in the official **Neuromatch Academy Animal Pose Estimation** project when images are affected by common perturbations such as blur, noise, brightness changes, contrast changes, and occlusion. Rather than evaluating a single trained model, I trained five independently initialized U-Net models to distinguish variability introduced during training from performance changes caused by image perturbations.
+The study investigates how the U-Net-based animal pose estimator provided in the official **Neuromatch Academy Animal Pose Estimation** project responds to controlled changes in image appearance and visibility. The evaluated conditions include mild and strong Gaussian blur, Gaussian noise, brightness and contrast changes, and central occlusion.
 
-This work builds upon the official **Neuromatch Academy Animal Pose Estimation** notebook, which downloads and prepares the fruit fly dataset, represents seventeen anatomical landmarks as heatmaps, trains a single U-Net model (Ronneberger et al., 2015), and evaluates landmark localization using Euclidean error. Using the original notebook in Google Colab, I progressively incorporated new Markdown and code cells to train multiple independent models, evaluate robustness under controlled image perturbations, compute additional quantitative analyses and statistical summaries, and automatically generate figures, CSV files, model checkpoints, and the final report while preserving the original dataset, architecture, and training pipeline.
+Rather than evaluating a single trained model, I trained five independently initialized U-Net models using random seeds `11`, `22`, `33`, `44`, and `55`. This design allows variability introduced during training to be considered separately from performance changes associated with the image perturbations.
 
-The objective of this project was not to modify the original Neuromatch model, but to extend its evaluation through a reproducible multi-run robustness analysis.
+This work builds upon the official **Neuromatch Academy Animal Pose Estimation** notebook, which downloads and prepares the fruit fly dataset, represents seventeen anatomical landmarks as heatmaps, trains a single U-Net model based on the architecture proposed by Ronneberger et al. (2015), and evaluates landmark localization using Euclidean error.
+
+Using the original notebook in Google Colab, I added new Markdown and code cells to train multiple independent models, apply deterministic perturbations during evaluation, perform quantitative and landmark-level analyses, run exploratory paired statistical tests, and generate figures, CSV files, model checkpoints, and a Word report while preserving the original model and training workflow.
+
+The objective was not to modify the original U-Net model, but to extend its evaluation through a reproducible multi-run robustness analysis.
 
 ## Neuromatch Academy Resources
 
@@ -17,31 +21,40 @@ The objective of this project was not to modify the original Neuromatch model, b
 
 # Motivation
 
-Animal pose estimation models are typically evaluated using test images that follow the same distribution as the training data. In practice, however, image quality and appearance may change because of blur, noise, illumination changes, geometric transformations, or partial occlusion. Evaluating model performance under these perturbations provides additional information about robustness beyond standard test-set accuracy.
+Changes in image quality or visibility can affect the predictions of computer-vision models. Evaluating a model under blur, noise, illumination changes, and occlusion provides information about its behavior beyond performance on unmodified validation images (Geirhos et al., 2020).
 
-Deep neural networks are also influenced by stochastic processes such as parameter initialization and stochastic optimization. Consequently, independently trained models may produce different results even when the architecture, hyperparameters, and dataset remain unchanged (Henderson et al., 2018; Åkesson et al., 2024).
+Deep neural-network training is also affected by sources of randomness such as parameter initialization and stochastic optimization. As a result, independently trained models may achieve different performance even when they use the same architecture, hyperparameters, and dataset (Henderson et al., 2018; Åkesson et al., 2024).
 
-To distinguish variability introduced during training from performance changes caused by image perturbations, I trained five independent U-Net models using different random seeds and evaluated each model under identical perturbation conditions.
+To account for this variability, I evaluated the same perturbation conditions across five independently trained models while keeping the train-validation split fixed.
 
-Throughout this project, **robustness** refers to the ability of a trained model to maintain landmark localization accuracy under image perturbations relative to its corresponding baseline performance.
+Throughout this project, **robustness** refers to the ability of a trained model to maintain landmark-localization accuracy under an image perturbation relative to its own baseline performance.
 
 ---
 
 # Quantitative Evaluation
 
-The original Neuromatch notebook evaluates a single trained model using Euclidean landmark localization error. This project extends that evaluation by analyzing five independently trained models under both baseline and perturbed conditions.
+Each model is evaluated on the same fixed validation subset under the baseline condition and six deterministic perturbation conditions:
 
-For each experiment, the notebook computes:
+- Mild Gaussian Blur: kernel size `5`, σ = `1.0`.
+- Strong Gaussian Blur: kernel size `9`, σ = `2.0`.
+- Gaussian Noise: σ = `0.10`.
+- Brightness: factor `1.30`.
+- Contrast: factor `1.40`.
+- Central Occlusion: a centered mask covering 40% of the image height and width.
 
-- Mean landmark localization error.
-- Median landmark localization error.
-- Percentage of Correct Keypoints (PCK).
-- Landmark-level localization error.
-- Paired comparisons between baseline and perturbed conditions.
-- Summary statistics across independent training runs.
-- Robustness visualizations illustrating the effect of each perturbation.
+The landmark annotations remain unchanged because the perturbations modify only image appearance or visibility.
 
-The computed metrics are automatically summarized in figures, CSV files, and the final report generated by the notebook.
+The notebook computes:
+
+- Mean and median landmark-localization error.
+- PCK@5, PCK@10, and PCK@20.
+- Landmark-level mean error and PCK@5.
+- Absolute and relative changes from each model's baseline.
+- Mean and standard deviation across the five runs.
+- The proportion of runs in which each perturbation increased error.
+- Exploratory paired t-tests and one-sided Wilcoxon signed-rank tests.
+
+Because only five paired runs are available, the statistical tests are treated as exploratory.
 
 ---
 
@@ -53,27 +66,24 @@ multirun_animal_pose_estimation_robustness/
 ├── README.md          # Project documentation.
 ├── notebooks/         # Google Colab notebook containing the complete workflow.
 ├── models/            # Saved U-Net checkpoints.
-├── results/           # Quantitative results and summary statistics.
-├── figures/           # Generated robustness figures.
-└── reports/           # Final report generated by the notebook.
-```
+├── results/           # Quantitative CSV files and summary statistics.
+├── figures/           # Quantitative and qualitative robustness figures.
+└── reports/           # Final Word report
 
-Running the notebook from beginning to end automatically:
+# Running the notebook from beginning to end:
 
 - Downloads and prepares the original Neuromatch dataset.
-- Installs any additional packages required for the extended analyses when needed.
-- Trains five independent U-Net models.
-- Evaluates baseline and perturbed conditions.
-- Computes landmark localization error, Percentage of Correct Keypoints (PCK), landmark-level analyses, paired comparisons, and summary statistics.
-- Generates robustness figures and CSV files.
-- Saves trained model checkpoints.
-- Generates the final Word report.
-- Creates a ZIP archive containing all generated outputs.
-
----
+- Installs additional packages when required.
+- Creates one fixed training-validation split.
+- Trains five U-Net models using seeds 11, 22, 33, 44, and 55.
+- Evaluates every model under baseline and perturbation conditions.
+- Exports run-level, landmark-level, paired, statistical, and summary CSV files.
+- Generates quantitative and qualitative figures.
+- Saves the five trained model checkpoints.
+- Creates the final Word report and supporting downloadable outputs.
 
 # Acknowledgements
 
-This work was completed as part of the **Neuromatch Academy Deep Learning** program (July 2026).
+This work was completed as part of the Neuromatch Academy Deep Learning program (July 2026).
 
-I gratefully acknowledge Neuromatch Academy for providing the lectures, educational materials, original notebook, and dataset that served as the foundation for this project.
+I gratefully acknowledge Neuromatch Academy for providing the lectures, educational materials, original notebook, dataset workflow, and model implementation that served as the foundation for this project.
