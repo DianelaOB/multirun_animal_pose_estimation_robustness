@@ -1,87 +1,47 @@
 # Multi-Run Quantitative Robustness Analysis of the Neuromatch Animal Pose Estimator
 
-This repository contains my individual extension of the official **Neuromatch Academy Animal Pose Estimation** project.
+This repository documents my individual extension of the official **Neuromatch Academy Animal Pose Estimation** project.
 
-The original Neuromatch Academy notebook trains a U-Net model to localize seventeen anatomical landmarks in grayscale images of *Drosophila melanogaster* using the architecture proposed by **Ronneberger et al. (2015)**. While the original educational project evaluates a single trained model, this work extends the notebook to investigate how robust the trained model is under controlled image perturbations by training multiple independent models and comparing their performance.
-
-Rather than modifying the original U-Net architecture, I preserved the original training pipeline and focused on extending the evaluation with additional robustness experiments, quantitative analyses, statistical summaries, and automated report generation provided through new Markdown and code cells added to the original notebook.
+The original Neuromatch notebook trains and evaluates a U-Net model for landmark localization in *Drosophila melanogaster* images using the architecture proposed by Ronneberger et al. (2015). This project extends the original notebook by evaluating model robustness across multiple independent training runs under controlled image perturbations while preserving the original training pipeline.
 
 **Original Neuromatch Academy project**
 
 https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html
 
----
-
 # Motivation
 
-Training deep neural networks is influenced by random processes such as parameter initialization, mini-batch ordering, and stochastic optimization. Consequently, models trained using identical architectures, hyperparameters, and datasets may still produce different prediction accuracies across independent training runs (**Henderson et al., 2018; Åkesson et al., 2024**).
+Deep neural networks are influenced by stochastic processes such as parameter initialization and optimization. Consequently, independently trained models may exhibit different performance even when the architecture, hyperparameters, and dataset remain unchanged (Henderson et al., 2018; Åkesson et al., 2024).
 
-To account for this variability, I trained five independently initialized U-Net models using different random seeds and evaluated each model under identical perturbation conditions. Comparing repeated independent training runs makes it possible to distinguish variability introduced during optimization from performance changes caused by image perturbations, following recommendations from the reproducibility literature (**Henderson et al., 2018**).
+To account for this variability, the model was trained five times using different random seeds. Robustness was then evaluated by comparing each trained model under identical perturbation conditions.
 
----
+# Repository Organization
 
-# Repository Structure
+This project was developed in **Google Colab** by extending the official **Neuromatch Academy Animal Pose Estimation** notebook https://colab.research.google.com/github/NeuromatchAcademy/course-content-dl/blob/main/projects/Neuroscience/pose_estimation.ipynb
+It provides the dataset download procedure, model implementation, visualization utilities, and training pipeline. During the project, additional Markdown and code cells were incorporated to implement repeated training runs, robustness experiments, quantitative analyses, statistical summaries, and automated report generation.
 
-This project was developed in **Google Colab** by extending the official **Neuromatch Academy Animal Pose Estimation** notebook https://colab.research.google.com/github/NeuromatchAcademy/course-content-dl/blob/main/projects/Neuroscience/pose_estimation.ipynb 
+Running the notebook from beginning to end automatically:
 
-The original notebook already provides the dataset download procedure, model implementation, visualization utilities, and training workflow. Additional Markdown and code cells were progressively incorporated during the project to implement repeated training runs, robustness evaluation, quantitative analyses, statistical summaries, and automatic report generation.
+- downloads and prepares the original Neuromatch dataset;
+- installs any additional packages required for the extended analyses when needed;
+- trains five independent U-Net models;
+- evaluates baseline and perturbed conditions;
+- computes quantitative robustness metrics and landmark-level analyses;
+- generates robustness figures, CSV files, and statistical summaries;
+- exports the trained model checkpoints, the final Word report, and a ZIP archive containing all generated outputs.
 
-```text
+```
 multirun_animal_pose_estimation_robustness/
 
-├── README.md          # Project overview, documentation, and reproducibility notes.
+├── README.md          # Project overview and documentation.
 ├── notebooks/         # Google Colab notebook containing the complete study.
-├── models/            # Saved U-Net checkpoints from the independent training runs.
+├── models/            # Saved U-Net checkpoints.
 ├── results/           # Quantitative CSV files and summary statistics.
-├── figures/           # Automatically generated figures.
-└── reports/           # Final report generated by the notebook.
+├── figures/           # Generated figures.
+└── reports/           # Final report.
 ```
 
----
+ # Acknowledgements
 
-# Experimental Workflow
+This work was developed during **Neuromatch Academy Deep Learning**.
 
-Running the notebook reproduces the complete analysis:
-
-1. Download and prepare the Neuromatch dataset.
-2. Train five independent U-Net models.
-3. Evaluate baseline landmark localization.
-4. Apply controlled image perturbations.
-5. Compute localization error and Percentage of Correct Keypoints (PCK).
-6. Perform landmark-level and paired robustness analyses.
-7. Generate figures, CSV files, and the final report.
-
-The original U-Net architecture (**Ronneberger et al., 2015**), together with the optimizer, loss function, and training procedure provided by the Neuromatch notebook (**Neuromatch Academy, n.d.**), were preserved throughout the study.
-
----
-
-# Generated Outputs
-
-Executing the notebook automatically generates:
-
-- trained U-Net model checkpoints;
-- quantitative CSV files;
-- robustness figures;
-- landmark-level summary tables;
-- statistical summary tables;
-- a Word report describing the experimental results;
-- a ZIP archive containing all generated outputs.
-
----
-
-# Reproducing the Study
-
-Open the notebook in **Google Colab** and execute the cells sequentially.
-
-The notebook automatically downloads the original Neuromatch dataset, installs any additional packages required for the extended analyses when necessary, and reproduces the complete workflow, including model training, robustness evaluation, quantitative analyses, figure generation, CSV export, and report generation.
-
----
-
-# Acknowledgements
-
-This work was developed as part of the **Neuromatch Academy Deep Learning** program.
-
-The original notebook, dataset, U-Net implementation, and training pipeline were developed by **Neuromatch Academy**. The additional robustness experiments, quantitative analyses, and reporting workflow included in this repository were developed as part of this project.
-
-
-Ronneberger, O., Fischer, P., & Brox, T. (2015). *U-Net: Convolutional Networks for Biomedical Image Segmentation*. In **Medical Image Computing and Computer-Assisted Intervention (MICCAI)**.
+The original notebook, dataset, and training pipeline were provided by Neuromatch Academy. This repository documents the additional robustness experiments and quantitative analyses developed during the project.
