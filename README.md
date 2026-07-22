@@ -70,6 +70,8 @@ multirun_animal_pose_estimation_robustness/
 ├── figures/           # Quantitative and qualitative robustness figures.
 └── reports/           # Final Word report
 
+---
+
 # Running the notebook from beginning to end:
 
 - Downloads and prepares the original Neuromatch dataset.
@@ -81,6 +83,8 @@ multirun_animal_pose_estimation_robustness/
 - Generates quantitative and qualitative figures.
 - Saves the five trained model checkpoints.
 - Creates the final Word report and supporting downloadable outputs.
+
+---
 
 # Acknowledgements
 
