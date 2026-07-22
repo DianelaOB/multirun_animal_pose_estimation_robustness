@@ -1,12 +1,13 @@
 # Multi-Run Quantitative Robustness Analysis of the Neuromatch Animal Pose Estimator
 
-This repository documents my individual extension of the official **Neuromatch Academy Animal Pose Estimation** project.
+This repository contains the work developed for my **Neuromatch Academy Deep Learning** project on evaluating the robustness of a U-Net-based animal pose estimator.
 
-The original Neuromatch notebook trains and evaluates a U-Net model for landmark localization in *Drosophila melanogaster* images using the architecture proposed by Ronneberger et al. (2015). This project extends the original notebook by evaluating model robustness across multiple independent training runs under controlled image perturbations while preserving the original training pipeline.
+The project builds upon the official **Neuromatch Academy Animal Pose Estimation** notebook, which implements a U-Net model (Ronneberger et al., 2015) for localizing seventeen anatomical landmarks in *Drosophila melanogaster* images. Working in **Google Colab**, I extended the original notebook by adding new Markdown and code cells to perform repeated training runs, robustness experiments, quantitative analyses, statistical summaries, and automated report generation while preserving the original training pipeline.
 
-**Original Neuromatch Academy project**
+**Neuromatch Academy resources**
 
-https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html
+- Project page: https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html
+- Original notebook: https://colab.research.google.com/github/NeuromatchAcademy/course-content-dl/blob/main/projects/Neuroscience/pose_estimation.ipynb
 
 # Motivation
 
@@ -14,21 +15,7 @@ Deep neural networks are influenced by stochastic processes such as parameter in
 
 To account for this variability, the model was trained five times using different random seeds. Robustness was then evaluated by comparing each trained model under identical perturbation conditions.
 
-# Repository Organization
-
-This project was developed in **Google Colab** by extending the official **Neuromatch Academy Animal Pose Estimation** notebook https://colab.research.google.com/github/NeuromatchAcademy/course-content-dl/blob/main/projects/Neuroscience/pose_estimation.ipynb
-It provides the dataset download procedure, model implementation, visualization utilities, and training pipeline. During the project, additional Markdown and code cells were incorporated to implement repeated training runs, robustness experiments, quantitative analyses, statistical summaries, and automated report generation.
-
-Running the notebook from beginning to end automatically:
-
-- downloads and prepares the original Neuromatch dataset;
-- installs any additional packages required for the extended analyses when needed;
-- trains five independent U-Net models;
-- evaluates baseline and perturbed conditions;
-- computes quantitative robustness metrics and landmark-level analyses;
-- generates robustness figures, CSV files, and statistical summaries;
-- exports the trained model checkpoints, the final Word report, and a ZIP archive containing all generated outputs.
-
+# Repository Overview
 ```
 multirun_animal_pose_estimation_robustness/
 
@@ -39,9 +26,18 @@ multirun_animal_pose_estimation_robustness/
 ├── figures/           # Generated figures.
 └── reports/           # Final report.
 ```
+Running the notebook from beginning to end automatically:
 
- # Acknowledgements
+- downloads and prepares the original Neuromatch dataset;
+- installs any additional packages required for the extended analyses when needed;
+- trains five independent U-Net models;
+- evaluates baseline and perturbed conditions;
+- computes quantitative robustness metrics and landmark-level analyses;
+- generates robustness figures, CSV files, and statistical summaries;
+- exports the trained model checkpoints, the final Word report, and a ZIP archive containing all generated outputs.
 
-This work was developed during **Neuromatch Academy Deep Learning**.
+# Acknowledgements
 
-The original notebook, dataset, and training pipeline were provided by Neuromatch Academy. This repository documents the additional robustness experiments and quantitative analyses developed during the project.
+This work was completed as part of the **Neuromatch Academy Deep Learning** program, July 2026.
+
+I gratefully acknowledge Neuromatch Academy for providing the original notebook, dataset, training and educational materials on which this project is based.
