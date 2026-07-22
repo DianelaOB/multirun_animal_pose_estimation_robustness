@@ -14,14 +14,24 @@ https://deeplearning.neuromatch.io/projects/Neuroscience/pose_estimation.html
 
 # Motivation
 
-Neural networks are inherently stochastic. Even when the architecture, hyperparameters, and training data remain identical, different random initializations can produce models with slightly different performance.
+Training deep neural networks involves several sources of randomness,
+including parameter initialization, mini-batch ordering, and optimization.
+As a result, models trained with the same architecture,
+hyperparameters, and dataset may still exhibit different performance
+across independent runs (Henderson et al., 2018; Åkesson et al., 2024).
 
-Because of this variability, conclusions based on a single trained model may not accurately represent the robustness of the method.
+Because of this variability, evaluating robustness using a single trained
+model may not fully capture how consistently the model responds to image
+perturbations.
 
-To better characterize model behavior, I trained the same U-Net architecture multiple times using different random seeds and evaluated each trained model under identical perturbation conditions.
+To better characterize model behavior, I trained the same U-Net
+architecture five independent times using different random seeds while
+keeping the architecture, training configuration, and validation dataset
+unchanged.
 
-The objective was not to improve the original Neuromatch model, but to develop a reproducible framework for measuring robustness quantitatively.
-
+Rather than modifying the original Neuromatch U-Net architecture, the
+objective of this project was to develop a reproducible quantitative
+framework for measuring robustness across independently trained models.
 ---
 
 # Experimental Design
@@ -103,7 +113,7 @@ Compared with the original Neuromatch notebook, this repository adds:
 
 ---
 
-# Running the Notebook
+# Running the Notebook and outputs
 
 The project was developed in Google Colab.
 
@@ -121,20 +131,6 @@ Running the notebook from beginning to end will:
 Because all runs use the same validation split and training configuration, the resulting metrics can be compared directly across models.
 
 ---
-
-# Outputs
-
-The notebook automatically generates:
-
-- trained model weights
-- quantitative evaluation tables
-- robustness figures
-- CSV result files
-- summary statistics
-- final report
-
----
-
 # Limitations
 
 This work evaluates robustness using a single fruit fly dataset and one perturbation intensity for each evaluated condition.
@@ -144,20 +140,6 @@ Although five independent training runs provide a more reliable estimate of robu
 The statistical analyses included in this repository should therefore be interpreted as exploratory.
 
 ---
-
-# Future Work
-
-Possible extensions include:
-
-- perturbation-based data augmentation during training
-- rotations and translations
-- multiple perturbation severity levels
-- motion blur
-- additional animal pose estimation datasets
-- comparison with alternative pose estimation architectures
-
----
-
 # Acknowledgements
 
 This work extends the educational Animal Pose Estimation project developed for **Neuromatch Academy Deep Learning**.
