@@ -22,7 +22,7 @@ To account for this variability, I trained five independently initialized U-Net 
 
 # Repository Structure
 
-This project was developed in **Google Colab** by extending the official **Neuromatch Academy Animal Pose Estimation** notebook (**Neuromatch Academy, n.d.**).
+This project was developed in **Google Colab** by extending the official **Neuromatch Academy Animal Pose Estimation** notebook 
 
 The original notebook already provides the dataset download procedure, model implementation, visualization utilities, and training workflow. Additional Markdown and code cells were progressively incorporated during the project to implement repeated training runs, robustness evaluation, quantitative analyses, statistical summaries, and automatic report generation.
 
