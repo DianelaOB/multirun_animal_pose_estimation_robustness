@@ -29,9 +29,6 @@ architecture five independent times using different random seeds while
 keeping the architecture, training configuration, and validation dataset
 unchanged.
 
-Rather than modifying the original Neuromatch U-Net architecture, the
-objective of this project was to develop a reproducible quantitative
-framework for measuring robustness across independently trained models.
 ---
 
 # Experimental Design
