@@ -4,7 +4,7 @@ This repository contains my individual extension of the official **Neuromatch Ac
 
 The original Neuromatch Academy notebook trains a U-Net model to localize seventeen anatomical landmarks in grayscale images of *Drosophila melanogaster* using the architecture proposed by **Ronneberger et al. (2015)**. While the original educational project evaluates a single trained model, this work extends the notebook to investigate how robust the trained model is under controlled image perturbations by training multiple independent models and comparing their performance.
 
-Rather than modifying the original U-Net architecture, I preserved the original training pipeline and focused on extending the evaluation with additional robustness experiments, quantitative analyses, statistical summaries, and automated report generation provided through new Markdown and code cells added to the original notebook (**Neuromatch Academy, n.d.**).
+Rather than modifying the original U-Net architecture, I preserved the original training pipeline and focused on extending the evaluation with additional robustness experiments, quantitative analyses, statistical summaries, and automated report generation provided through new Markdown and code cells added to the original notebook.
 
 **Original Neuromatch Academy project**
 
