@@ -85,9 +85,12 @@ multirun_animal_pose_estimation_robustness/
 - Creates the final Word report and supporting downloadable outputs.
 
 ---
-
 # Acknowledgements
 
 This work was completed as part of the **Neuromatch Academy Deep Learning program (July 2026)**.
 
-I gratefully acknowledge Neuromatch Academy for providing the lectures, educational materials, original notebook, dataset workflow, and model implementation that served as the foundation for this project.
+<p align="center">
+  <img src="Neuromatch_logo.png" alt="Neuromatch Academy Logo" width="250">
+</p>
+
+I gratefully acknowledge **Neuromatch Academy** for providing the lectures, educational materials, project framework, and open-source resources that made this work possible.
