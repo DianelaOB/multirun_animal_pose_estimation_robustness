@@ -88,9 +88,8 @@ multirun_animal_pose_estimation_robustness/
 # Acknowledgements
 
 This work was completed as part of the **Neuromatch Academy Deep Learning program (July 2026)**.
-
-<p align="center">
-  <img src="Neuromatch_logo.png" alt="Neuromatch_logo" width="250">
-</p>
-
 I gratefully acknowledge **Neuromatch Academy** for providing the lectures, educational materials, project framework, and open-source resources that made this work possible.
+<p align="center">
+  <img src="Neuromatch_logo.png" alt="Neuromatch Logo" width="250" style="margin-right: 20px;">
+  <img src="Neuromatch_deeplearning_logo.png" alt="Neuromatch Deep Learning Logo" width="250">
+</p>
